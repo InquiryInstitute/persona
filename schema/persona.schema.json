@@ -1,0 +1,441 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://inquiry.institute/schema/persona/v1",
+  "title": "Inquiry Institute Persona Schema",
+  "description": "Canonical schema for faculty persona definition - a reconstructed pattern of conversational reasoning",
+  "type": "object",
+  "required": [
+    "identity",
+    "conversational_posture",
+    "epistemic_stance",
+    "argumentative_mechanics",
+    "ethical_orientation",
+    "affective_envelope",
+    "rhetorical_constraints",
+    "conversational_affordances",
+    "stress_response",
+    "metadata"
+  ],
+  "properties": {
+    "identity": {
+      "type": "object",
+      "description": "Section 1: Identity & Corpus Grounding",
+      "required": ["id", "name", "corpus"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9-]*$",
+          "description": "Unique identifier (lowercase, hyphenated)"
+        },
+        "name": {
+          "type": "object",
+          "properties": {
+            "display": { "type": "string", "description": "Display name" },
+            "formal": { "type": "string", "description": "Formal/full name" },
+            "variants": {
+              "type": "array",
+              "items": { "type": "string" },
+              "description": "Alternative names, transliterations"
+            }
+          },
+          "required": ["display"]
+        },
+        "dates": {
+          "type": "object",
+          "properties": {
+            "birth": { "type": "string", "description": "Birth date/year (ISO or approximate)" },
+            "death": { "type": "string", "description": "Death date/year (ISO or approximate)" },
+            "floruit": { "type": "string", "description": "Period of activity if dates uncertain" }
+          }
+        },
+        "tradition": {
+          "type": "string",
+          "description": "Primary intellectual tradition"
+        },
+        "disciplines": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Fields of inquiry"
+        },
+        "corpus": {
+          "type": "object",
+          "description": "Documentary grounding for reconstruction",
+          "properties": {
+            "primary_works": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "title": { "type": "string" },
+                  "date": { "type": "string" },
+                  "weight": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 1,
+                    "description": "Relative importance for persona inference"
+                  }
+                }
+              }
+            },
+            "secondary_sources": {
+              "type": "array",
+              "items": { "type": "string" }
+            },
+            "exclusions": {
+              "type": "array",
+              "items": { "type": "string" },
+              "description": "Works excluded from reconstruction (spurious, contested)"
+            }
+          },
+          "required": ["primary_works"]
+        },
+        "relationships": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "persona_id": { "type": "string" },
+              "type": {
+                "type": "string",
+                "enum": ["teacher", "student", "colleague", "rival", "correspondent", "influence", "influenced_by"]
+              },
+              "notes": { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+    "conversational_posture": {
+      "type": "object",
+      "description": "Section 2: How the persona enters and holds dialogue",
+      "properties": {
+        "default_stance": {
+          "type": "string",
+          "enum": ["socratic", "didactic", "collaborative", "adversarial", "contemplative", "provocative"],
+          "description": "Primary mode of engaging interlocutors"
+        },
+        "turn_taking": {
+          "type": "object",
+          "properties": {
+            "initiative": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1,
+              "description": "0 = purely responsive, 1 = drives conversation"
+            },
+            "question_frequency": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1,
+              "description": "Proportion of turns that are questions"
+            },
+            "elaboration_tendency": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1,
+              "description": "0 = terse, 1 = expansive"
+            }
+          }
+        },
+        "register": {
+          "type": "object",
+          "properties": {
+            "formality": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "technical_density": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1,
+              "description": "Use of domain-specific terminology"
+            },
+            "metaphor_use": {
+              "type": "string",
+              "enum": ["sparse", "moderate", "abundant", "systematic"]
+            }
+          }
+        },
+        "characteristic_moves": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Signature conversational patterns"
+        }
+      }
+    },
+    "epistemic_stance": {
+      "type": "object",
+      "description": "Section 3: How the persona relates to knowledge and truth",
+      "properties": {
+        "certainty_orientation": {
+          "type": "string",
+          "enum": ["dogmatic", "systematic", "provisional", "skeptical", "apophatic"],
+          "description": "Relationship to claims of knowledge"
+        },
+        "evidence_hierarchy": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Ordered list of what counts as evidence (e.g., reason, experience, revelation)"
+        },
+        "revision_openness": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "Willingness to modify positions under challenge"
+        },
+        "truth_conception": {
+          "type": "string",
+          "description": "Correspondence, coherence, pragmatic, etc."
+        },
+        "acknowledged_limits": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "What the persona admits to not knowing"
+        }
+      }
+    },
+    "argumentative_mechanics": {
+      "type": "object",
+      "description": "Section 4: How the persona constructs and evaluates arguments",
+      "properties": {
+        "preferred_forms": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["deductive", "inductive", "abductive", "analogical", "dialectical", "transcendental", "phenomenological", "narrative"]
+          }
+        },
+        "burden_of_proof": {
+          "type": "string",
+          "enum": ["claims_it", "demands_it", "shares_it", "ignores_it"],
+          "description": "How the persona handles proof obligations"
+        },
+        "counterargument_style": {
+          "type": "string",
+          "enum": ["direct_refutation", "reductio", "distinction_making", "reframing", "concession_then_pivot"]
+        },
+        "concession_behavior": {
+          "type": "object",
+          "properties": {
+            "frequency": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "depth": {
+              "type": "string",
+              "enum": ["surface", "substantial", "transformative"]
+            }
+          }
+        },
+        "resolution_preference": {
+          "type": "string",
+          "enum": ["synthesis", "victory", "aporia", "continued_inquiry", "peaceful_disagreement"]
+        }
+      }
+    },
+    "ethical_orientation": {
+      "type": "object",
+      "description": "Section 5: Ethical and social commitments",
+      "properties": {
+        "framework": {
+          "type": "string",
+          "description": "Primary ethical framework (virtue, deontological, consequentialist, care, etc.)"
+        },
+        "core_values": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Non-negotiable commitments"
+        },
+        "social_stance": {
+          "type": "object",
+          "properties": {
+            "hierarchy_acceptance": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "tradition_deference": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "reform_orientation": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            }
+          }
+        },
+        "treatment_of_opponents": {
+          "type": "string",
+          "enum": ["respectful", "dismissive", "converting", "curious", "combative"]
+        }
+      }
+    },
+    "affective_envelope": {
+      "type": "object",
+      "description": "Section 6: Emotional range and expression",
+      "properties": {
+        "baseline_affect": {
+          "type": "string",
+          "description": "Default emotional tone"
+        },
+        "emotional_range": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Emotions that may surface in dialogue"
+        },
+        "emotional_triggers": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "trigger": { "type": "string" },
+              "response": { "type": "string" }
+            }
+          }
+        },
+        "expression_mode": {
+          "type": "string",
+          "enum": ["restrained", "moderate", "expressive", "passionate"]
+        }
+      }
+    },
+    "rhetorical_constraints": {
+      "type": "object",
+      "description": "Section 7: Hard guards - what the persona MUST NOT do",
+      "properties": {
+        "anachronism_guards": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Topics, concepts, events the persona cannot reference"
+        },
+        "position_locks": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "topic": { "type": "string" },
+              "position": { "type": "string" },
+              "evidence": { "type": "string" }
+            }
+          },
+          "description": "Known positions that must be maintained"
+        },
+        "forbidden_claims": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Things the persona must never assert"
+        },
+        "vocabulary_exclusions": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Terms/concepts unavailable to the persona"
+        }
+      }
+    },
+    "conversational_affordances": {
+      "type": "object",
+      "description": "Section 8: What the persona CAN do well",
+      "properties": {
+        "expertise_domains": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "teaching_modes": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["lecture", "dialogue", "demonstration", "parable", "provocation", "silence"]
+          }
+        },
+        "inquiry_strengths": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Types of questions the persona handles well"
+        },
+        "collaboration_potential": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "persona_id": { "type": "string" },
+              "synergy_type": { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+    "stress_response": {
+      "type": "object",
+      "description": "Section 9: Behavior under pressure, challenge, or confusion",
+      "properties": {
+        "challenge_response": {
+          "type": "string",
+          "enum": ["engages", "deflects", "escalates", "retreats", "reframes", "invites_more"]
+        },
+        "confusion_behavior": {
+          "type": "string",
+          "enum": ["admits_openly", "probes_further", "asserts_anyway", "changes_subject", "seeks_clarity"]
+        },
+        "contradiction_handling": {
+          "type": "string",
+          "enum": ["resolves", "tolerates", "exploits", "denies", "transcends"]
+        },
+        "graceful_degradation": {
+          "type": "string",
+          "description": "How the persona behaves when pushed beyond competence"
+        }
+      }
+    },
+    "metadata": {
+      "type": "object",
+      "description": "Section 10: Versioning and provenance",
+      "required": ["version", "created", "schema_version"],
+      "properties": {
+        "version": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+$",
+          "description": "Semantic version of this persona definition"
+        },
+        "schema_version": {
+          "type": "string",
+          "const": "1.0.0"
+        },
+        "created": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "modified": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "authors": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "reviewers": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "rationale": {
+          "type": "string",
+          "description": "Reason for this version"
+        },
+        "changelog": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "version": { "type": "string" },
+              "date": { "type": "string", "format": "date" },
+              "changes": { "type": "string" }
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,135 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://inquiry.institute/schema/context/v1",
+  "title": "Inquiry Institute Contextual Mode Schema",
+  "description": "Defines bounded deltas for contextual modulation of personas. One persona, many modes.",
+  "type": "object",
+  "required": ["id", "name", "deltas", "invariants"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]*$",
+      "description": "Unique identifier for this context"
+    },
+    "name": {
+      "type": "string",
+      "description": "Human-readable context name"
+    },
+    "description": {
+      "type": "string",
+      "description": "When and how this context is applied"
+    },
+    "deltas": {
+      "type": "object",
+      "description": "Bounded modifications to persona behavior",
+      "properties": {
+        "tone": {
+          "type": "object",
+          "properties": {
+            "shift": {
+              "type": "string",
+              "enum": ["warmer", "cooler", "more_formal", "less_formal", "more_urgent", "more_relaxed"]
+            },
+            "magnitude": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 0.3,
+              "description": "Maximum shift magnitude (bounded)"
+            }
+          }
+        },
+        "verbosity": {
+          "type": "object",
+          "properties": {
+            "direction": {
+              "type": "string",
+              "enum": ["increase", "decrease", "unchanged"]
+            },
+            "magnitude": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 0.3
+            }
+          }
+        },
+        "assertiveness": {
+          "type": "object",
+          "properties": {
+            "direction": {
+              "type": "string",
+              "enum": ["increase", "decrease", "unchanged"]
+            },
+            "magnitude": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 0.3
+            }
+          }
+        },
+        "concession_behavior": {
+          "type": "object",
+          "properties": {
+            "direction": {
+              "type": "string",
+              "enum": ["more_willing", "less_willing", "unchanged"]
+            },
+            "magnitude": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 0.3
+            }
+          }
+        },
+        "didactic_stance": {
+          "type": "object",
+          "properties": {
+            "shift": {
+              "type": "string",
+              "enum": ["more_didactic", "more_dialogic", "unchanged"]
+            },
+            "magnitude": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 0.3
+            }
+          }
+        }
+      }
+    },
+    "invariants": {
+      "type": "object",
+      "description": "What CANNOT change under this context",
+      "properties": {
+        "core_epistemology": {
+          "type": "boolean",
+          "const": true
+        },
+        "ethical_boundaries": {
+          "type": "boolean",
+          "const": true
+        },
+        "historical_constraints": {
+          "type": "boolean",
+          "const": true
+        },
+        "known_positions": {
+          "type": "boolean",
+          "const": true
+        }
+      },
+      "required": ["core_epistemology", "ethical_boundaries", "historical_constraints", "known_positions"]
+    },
+    "applicable_personas": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "List of persona IDs this context can apply to, or empty for universal"
+    },
+    "metadata": {
+      "type": "object",
+      "properties": {
+        "version": { "type": "string" },
+        "created": { "type": "string", "format": "date-time" }
+      }
+    }
+  }
+}

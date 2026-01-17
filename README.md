@@ -65,6 +65,23 @@ Features:
 
 See: [`InquiryInstitute/Inquiry.Institute/supabase/functions/ask-faculty`](https://github.com/InquiryInstitute/Inquiry.Institute/tree/main/supabase/functions/ask-faculty)
 
+### Matrix Integration
+
+All Matrix bot functions now use `ask-faculty` for unified persona handling:
+
+| Function | Role | Context Detection |
+|----------|------|-------------------|
+| `matrix-bridge` | Central routing | Detects context from room type/name |
+| `matrix-webhook` | Webhook handler | Uses `dialogue` context |
+| `matrix-poll` | Polling service | Uses `dialogue` context |
+| `matrix-bot-service` | Bot management | Uses `dialogue` context |
+
+**Context mapping:**
+- Symposium/board rooms → `symposium` (collaborative, conceding)
+- Lecture/class rooms → `lecture` (didactic, expansive)
+- DMs/office rooms → `office_hours` (helpful, pedagogical)
+- Group rooms → `dialogue` (socratic, questioning)
+
 ## Contextual Modes
 
 Per Design Document §5.2, plurality is handled through **contextual modes**, not separate identities:

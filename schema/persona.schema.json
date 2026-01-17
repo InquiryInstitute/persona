@@ -48,6 +48,64 @@
             "floruit": { "type": "string", "description": "Period of activity if dates uncertain" }
           }
         },
+        "mbti": {
+          "type": "object",
+          "description": "Myers-Briggs Type Indicator - inferred from documented reasoning patterns",
+          "properties": {
+            "type": {
+              "type": "string",
+              "pattern": "^[EI][SN][TF][JP]$",
+              "description": "4-letter MBTI type (e.g., INTP, ENFJ)"
+            },
+            "confidence": {
+              "type": "string",
+              "enum": ["high", "moderate", "low", "speculative"],
+              "description": "Confidence level in type assignment based on corpus evidence"
+            },
+            "dominant_function": {
+              "type": "string",
+              "enum": ["Ti", "Te", "Fi", "Fe", "Ni", "Ne", "Si", "Se"],
+              "description": "Primary cognitive function"
+            },
+            "auxiliary_function": {
+              "type": "string",
+              "enum": ["Ti", "Te", "Fi", "Fe", "Ni", "Ne", "Si", "Se"],
+              "description": "Secondary cognitive function"
+            },
+            "evidence": {
+              "type": "array",
+              "items": { "type": "string" },
+              "description": "Corpus evidence supporting type assignment"
+            },
+            "behavioral_markers": {
+              "type": "object",
+              "description": "Observable patterns that inform type inference",
+              "properties": {
+                "energy_direction": {
+                  "type": "string",
+                  "enum": ["inward", "outward", "balanced"],
+                  "description": "E/I: Where they draw energy"
+                },
+                "information_gathering": {
+                  "type": "string",
+                  "enum": ["concrete", "abstract", "balanced"],
+                  "description": "S/N: How they gather information"
+                },
+                "decision_making": {
+                  "type": "string",
+                  "enum": ["logical", "values-based", "balanced"],
+                  "description": "T/F: How they make decisions"
+                },
+                "lifestyle_orientation": {
+                  "type": "string",
+                  "enum": ["structured", "flexible", "balanced"],
+                  "description": "J/P: How they orient to the world"
+                }
+              }
+            }
+          },
+          "required": ["type"]
+        },
         "tradition": {
           "type": "string",
           "description": "Primary intellectual tradition"
@@ -402,7 +460,7 @@
         },
         "schema_version": {
           "type": "string",
-          "const": "1.0.0"
+          "const": "1.1.0"
         },
         "created": {
           "type": "string",

@@ -2,7 +2,7 @@
 
 ## Persona, Representation, and Modulation
 
-### Design Document v1.0
+### Design Document v1.1
 
 ---
 
@@ -70,7 +70,7 @@ Key commitments:
 
 Each faculty has **one canonical persona**, defined by a structured schema with the following sections:
 
-1. Identity & corpus grounding
+1. **Identity & corpus grounding** (includes **MBTI** cognitive profile)
 2. Conversational posture
 3. Epistemic stance
 4. Argumentative mechanics
@@ -80,6 +80,26 @@ Each faculty has **one canonical persona**, defined by a structured schema with 
 8. Conversational affordances
 9. Stress-response profile
 10. Versioning metadata
+
+### 4.1 MBTI Integration (v1.1.0)
+
+The Identity section now includes an optional **MBTI (Myers-Briggs Type Indicator)** field to inform cognitive style. MBTI is inferred from documented reasoning patterns, not claimed as biographical fact.
+
+MBTI data includes:
+- **type**: 4-letter code (e.g., INTP, ENFJ)
+- **confidence**: high / moderate / low / speculative
+- **dominant_function**: Primary cognitive function (Ti, Te, Fi, Fe, Ni, Ne, Si, Se)
+- **auxiliary_function**: Secondary cognitive function
+- **evidence**: Corpus passages supporting the inference
+- **behavioral_markers**: Energy direction, information gathering, decision making, lifestyle orientation
+
+MBTI informs:
+- Conversational posture defaults
+- Epistemic stance tendencies
+- Stress response patterns
+- Collaboration potential with other faculty
+
+**Important**: MBTI is a reconstruction tool, not a biographical claim. We assert "Plato's documented reasoning is consistent with INTP patterns," not "Plato was an INTP."
 
 The persona is a **locked scholarly artifact**, not a prompt.
 
